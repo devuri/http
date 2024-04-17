@@ -3,25 +3,64 @@
 use PHPUnit\Framework\TestCase;
 use Urisoft\HttpClient;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class HttpClientTest extends TestCase
 {
     private $httpClient;
 
-    protected function setUp(): void
+    public function test_you_tube400_bad_request(): void
     {
-        $this->httpClient = new HttpClient('https://api.example.com/', ['timeout' => 30]);
+        $badrequest = new HttpClient( 'https://www.googleapis.com', [ 'timeout' => 5 ] );
+
+        $this->assertEquals(5, $badrequest->context()->get('timeout'));
+
+        $response = $badrequest->get('/youtube/v3/playlists');
+
+        $this->assertEquals(400, $response['status']);
+        $this->assertEquals('Bad Request', $response['message']);
     }
 
-    public function testGetRequest()
+    public function test_fake_url(): void
+    {
+        $dummyjson = new HttpClient( 'https://fake.api.example.com/', [ 'timeout' => 5 ] );
+        $this->assertEquals(5, $dummyjson->context()->get('timeout'));
+
+        $response = $dummyjson->get('products/1');
+
+        $this->assertEquals(0, $response['status']);
+    }
+
+    public function test_client_defaults(): void
+    {
+        // $user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36';
+        $defaultClient = new HttpClient( 'https://api.example.com/' );
+
+        $this->assertNull($defaultClient->context()->get('api_key'));
+        $this->assertEquals('chrome', $defaultClient->context()->get('user_agent'));
+        $this->assertEquals(10, $defaultClient->context()->get('timeout'));
+    }
+
+    public function test_http_client(): void
+    {
+        $this->httpClient = new HttpClient('https://api.example.com/', ['timeout' => 30]);
+
+        $this->assertEquals(30, $this->httpClient->context()->get('timeout'));
+    }
+
+    public function test_get_request(): void
     {
         // Mocking file_get_contents to return a JSON response
         $url = 'https://api.example.com/data/endpoint';
         $response = json_encode(['success' => true, 'data' => 'Test data']);
-        
+
         $this->httpClient = $this->createMock(HttpClient::class);
         $this->httpClient->method('get')
-                         ->with($this->equalTo('/data/endpoint'))
-                         ->willReturn(['status' => 200, 'body' => $response]);
+            ->with($this->equalTo('/data/endpoint'))
+            ->willReturn(['status' => 200, 'body' => $response]);
 
         $result = $this->httpClient->get('/data/endpoint');
 
@@ -30,7 +69,7 @@ class HttpClientTest extends TestCase
         $this->assertEquals($response, $result['body']);
     }
 
-    public function testPostRequest()
+    public function test_post_request(): void
     {
         // Mocking file_get_contents to simulate a POST response
         $url = 'https://api.example.com/data/post';
@@ -39,11 +78,11 @@ class HttpClientTest extends TestCase
 
         $this->httpClient = $this->createMock(HttpClient::class);
         $this->httpClient->method('post')
-                         ->with(
-                             $this->equalTo('/data/post'),
-                             $this->equalTo($postData)
-                         )
-                         ->willReturn(['status' => 200, 'body' => $response]);
+            ->with(
+                $this->equalTo('/data/post'),
+                $this->equalTo($postData)
+            )
+            ->willReturn(['status' => 200, 'body' => $response]);
 
         $result = $this->httpClient->post('/data/post', $postData);
 
