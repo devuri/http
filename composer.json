@@ -1,9 +1,8 @@
 {
-    "name": "devuri/dot-access",
-    "description": "A simple PHP library for accessing nested data using dot notation.",
+    "name": "devuri/http",
+    "description": "A simple, flexible utility for making HTTP requests.",
     "keywords": [
-        "dot-access",
-        "nested-data",
+        "http",
         "dot-notation"
     ],
     "type": "library",
@@ -17,12 +16,12 @@
         }
     ],
     "support": {
-        "source": "https://github.com/devuri/dot-access",
-        "issues": "https://github.com/devuri/dot-access/issues"
+        "source": "https://github.com/devuri/http",
+        "issues": "https://github.com/devuri/http/issues"
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "devuri/dot-access": "^0.3"
+       "devuri/dot-access": "^0.3"
     },
     "autoload": {
         "psr-4": {
