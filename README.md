@@ -24,7 +24,7 @@ To install the `HttpClient`, you need to have Composer installed on your machine
 composer require devuri/http
 ```
 
-### Usage
+## Usage
 
 #### Basic Usage
 
@@ -83,7 +83,7 @@ $client = new HttpClient('https://api.example.com', $options);
 
 The `HttpClient` uses PHP's `file_get_contents` function for making HTTP requests and provides detailed response handling, including HTTP status codes and error messages. Response from requests will typically include status code, message, and any headers returned by the server.
 
-### Examples
+## Examples
 
 Below are some concrete examples to demonstrate the usage of the `HttpClient` class for various common tasks such as fetching data from an API, sending data, setting custom headers, and handling the response.
 
@@ -214,7 +214,7 @@ if ($response['status'] !== 200) {
 }
 ```
 
-### Security: Handling API Responses
+## Security: Handling API Responses
 
 When interacting with external APIs using the `HttpClient` or any similar tool, it's crucial to be aware of the security implications involved in handling the data and responses you receive. Here are some important considerations and best practices to ensure the security of your applications:
 
