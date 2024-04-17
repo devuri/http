@@ -102,24 +102,40 @@ class HttpClient
             'http' => [
                 'method'  => $method,
                 'header'  => implode( "\r\n", $headers ),
-                'content' => 'POST' === $method ? http_build_query( $data ) : null,
+                'content' => $this->prepare_http_content( $method, $data ),
                 'timeout' => $this->context->get( 'timeout' ),
             ],
+            'ssl'  => [
+                'verify_peer'       => true,
+                'verify_peer_name'  => true,
+                'allow_self_signed' => false,
+            ],
         ];
+
+        $_ca_path_file = $this->get_ca_bundle();
+
+        if ( is_dir( $_ca_path_file ) ) {
+            $opts['ssl']['capath'] = $_ca_path_file;
+        } else {
+            $opts['ssl']['cafile'] = $_ca_path_file;
+        }
 
         $context = stream_context_create( $opts );
 
         try {
-            $response = file_get_contents( $url, false, $context );
+            $response = @file_get_contents( $url, false, $context );
             if ( false === $response ) {
-                throw new Exception( "Unable to reach the endpoint: $url" );
+                $error = error_get_last();
+
+                throw new Exception( 'HTTP request failed: ' . $error['message'] );
             }
         } catch ( Exception $e ) {
             // error_log( $e->getMessage() );
             if ( ! isset( $http_response_header ) ) {
                 return [
-                    'status'  => 0,
-                    'message' => 'unknown error',
+                    'status'   => 0,
+                    'message'  => 'unknown error',
+                    'response' => [],
                 ];
             }
 
@@ -196,5 +212,23 @@ class HttpClient
         }
 
         return 0;
+    }
+
+    private function get_ca_bundle()
+    {
+        return \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
+    }
+
+    /**
+     * Prepare HTTP content based on method type.
+     *
+     * @param string $method HTTP method.
+     * @param array  $data   Data to send in the request.
+     *
+     * @return null|string Returns the URL-encoded query string if method is 'POST'; otherwise, null.
+     */
+    private function prepare_http_content( $method, $data )
+    {
+        return 'POST' === $method ? http_build_query( $data ) : null;
     }
 }
