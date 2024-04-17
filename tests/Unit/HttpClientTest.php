@@ -6,13 +6,36 @@ use Urisoft\HttpClient;
 /**
  * @internal
  *
- * @coversNothing
+ * @covers \Urisoft\HttpClient
  */
 class HttpClientTest extends TestCase
 {
     private $httpClient;
 
-    public function test_you_tube400_bad_request(): void
+    public function test_referrer_request(): void
+    {
+        $refer = new HttpClient( 'https://jsonplaceholder.typicode.com/' );
+        $refer->set_referrer("https://refer.example.com");
+        $response = $refer->get('posts/1');
+
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals('OK', $response['message']);
+        $this->assertEquals('https://refer.example.com', $response['referrer']);
+    }
+
+    public function test_json_placeholder_request(): void
+    {
+        $placeholder = new HttpClient( 'https://jsonplaceholder.typicode.com/', [ 'timeout' => 5 ] );
+
+        $this->assertEquals(5, $placeholder->context()->get('timeout'));
+
+        $response = $placeholder->get('posts/1');
+
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals('OK', $response['message']);
+    }
+
+    public function test_youtube_400_bad_request(): void
     {
         $badrequest = new HttpClient( 'https://www.googleapis.com', [ 'timeout' => 5 ] );
 
