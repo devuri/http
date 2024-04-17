@@ -95,6 +95,15 @@ You can set a custom user agent for your requests:
 $client->set_user_agent('Custom User Agent');
 ```
 
+### Setting a Referrer
+
+Set a referrer URL for your requests:
+
+```php
+$client->set_referrer("https://example.com");
+$response = $client->get("/data/endpoint");
+```
+
 ### Error Handling
 
 `HttpClient` handles connection errors by returning a status code and error message. Here's how you might handle errors:
