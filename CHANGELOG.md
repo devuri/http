@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.3](https://github.com/devuri/http/compare/v0.1.2...v0.1.3) (2024-04-17)
+
+
+### Bug Fixes
+
+* adds Set a `referrer` URL for your requests ([c6816e7](https://github.com/devuri/http/commit/c6816e7b096081d5ec1e145cfe6268882cfecc48))
+
+
+### Miscellaneous Chores
+
+* build ([4b7bc19](https://github.com/devuri/http/commit/4b7bc19dce2a69438f6d873a244e4e8157ea1a88))
+
 ## [0.1.2](https://github.com/devuri/http/compare/v0.1.1...v0.1.2) (2024-04-17)
 
 
