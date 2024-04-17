@@ -10,7 +10,7 @@ class HttpClient
     private ?string $api_key;
     private array $http_response;
     private DotAccess $context;
-	private ?string $referrer;
+    private ?string $referrer;
     private ?string $user_agent;
     private array $agents = [
         'moz'    => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
@@ -32,7 +32,7 @@ class HttpClient
             )
         );
         $this->api_key  = $this->context->get( 'api_key' );
-		$this->referrer = null;
+        $this->referrer = null;
         $agent_key      = $this->context->get( 'user_agent' );
 
         if ( \array_key_exists( $agent_key, $this->agents ) ) {
@@ -45,10 +45,10 @@ class HttpClient
         $this->user_agent = $user_agent;
     }
 
-	public function set_referrer(string $referrer): void
-	{
-	    $this->referrer = $referrer;
-	}
+    public function set_referrer( string $referrer ): void
+    {
+        $this->referrer = $referrer;
+    }
 
     public function context(): DotAccess
     {
@@ -68,7 +68,7 @@ class HttpClient
     protected function set_http_response( array $http_response_header ): array
     {
         if ( ! empty( $http_response_header ) ) {
-			$this->http_response['referrer']   = $this->referrer;
+            $this->http_response['referrer'] = $this->referrer;
             $this->http_response['response'] = $http_response_header;
             $this->http_response['http']     = explode( ' ', $http_response_header[0], 3 );
             $this->http_response['code']     = (int) $this->http_response['http'][1];
@@ -89,9 +89,9 @@ class HttpClient
         $default_headers = $this->api_key ? [ 'Authorization: Bearer ' . $this->api_key ] : [];
         $headers         = array_merge( $default_headers, $headers, [ 'User-Agent' => $this->user_agent ] );
 
-		if ($this->referrer && ! empty($this->referrer) ) {
-			$headers[] = 'Referer: ' . $this->referrer;
-		}
+        if ( $this->referrer && ! empty( $this->referrer ) ) {
+            $headers[] = 'Referer: ' . $this->referrer;
+        }
 
         $opts = [
             'http' => [

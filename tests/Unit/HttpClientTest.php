@@ -6,24 +6,24 @@ use Urisoft\HttpClient;
 /**
  * @internal
  *
- * @covers Urisoft\HttpClient
+ * @covers \Urisoft\HttpClient
  */
 class HttpClientTest extends TestCase
 {
     private $httpClient;
 
-	public function test_referrer_request(): void
-	{
-		$refer = new HttpClient( 'https://jsonplaceholder.typicode.com/' );
-		$refer->set_referrer("https://refer.example.com");
-		$response = $refer->get('posts/1');
+    public function test_referrer_request(): void
+    {
+        $refer = new HttpClient( 'https://jsonplaceholder.typicode.com/' );
+        $refer->set_referrer("https://refer.example.com");
+        $response = $refer->get('posts/1');
 
-		$this->assertEquals(200, $response['status']);
-		$this->assertEquals('OK', $response['message']);
-		$this->assertEquals('https://refer.example.com', $response['referrer']);
-	}
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals('OK', $response['message']);
+        $this->assertEquals('https://refer.example.com', $response['referrer']);
+    }
 
-	public function test_json_placeholder_request(): void
+    public function test_json_placeholder_request(): void
     {
         $placeholder = new HttpClient( 'https://jsonplaceholder.typicode.com/', [ 'timeout' => 5 ] );
 
