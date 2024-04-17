@@ -1,6 +1,6 @@
 # HttpClient
 
-The `HttpClient` is a Composer package that provides a simple, flexible utility for making HTTP requests. This package supports GET and POST methods and is designed to facilitate API requests requiring API key authentication. It's a basic straightforward way to interact with RESTful APIs from PHP applications.
+The `HttpClient` provides a simple, flexible utility for making HTTP requests. This package supports GET and POST methods and is designed to facilitate API requests requiring API key authentication. It's a basic straightforward way to interact with RESTful APIs from PHP applications.
 
 ## Features
 
