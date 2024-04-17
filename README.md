@@ -40,19 +40,29 @@ use Urisoft\HttpClient;
 
 ### Initialize HttpClient
 
-Create an instance of `HttpClient`. You can specify the base URL and optional parameters like API key and timeout:
+To start making HTTP requests, instantiate the `HttpClient` with the base URL of the API and optional configuration settings:
 
 ```php
-$baseUrl = 'https://api.example.com/';
-$client = new HttpClient($baseUrl, ['api_key' => 'your_api_key_here', 'timeout' => 30]);
+use Urisoft\HttpClient;
+
+$baseUrl = "https://api.example.com";
+$context = [
+    'user_agent' => 'moz', // Use 'moz', 'chrome', or 'safari'
+    'api_key'    => 'your_api_key',
+    'timeout'    => 20
+];
+
+$client = new HttpClient($baseUrl, $context);
 ```
 
-### Making a GET Request
+### Making Requests
 
-To fetch data via a GET request:
+#### GET Request
+
+Here's how to make a GET request to retrieve data:
 
 ```php
-$endpoint = '/data/endpoint';
+$endpoint = "/data/endpoint";
 $response = $client->get($endpoint);
 
 echo "<pre>";
@@ -60,12 +70,12 @@ print_r($response);
 echo "</pre>";
 ```
 
-### Making a POST Request
+#### POST Request
 
 To send data via a POST request:
 
 ```php
-$endpoint = '/data/post';
+$endpoint = "/data/post";
 $data = [
     'key' => 'value',
     'another_key' => 'another_value'
@@ -77,15 +87,23 @@ print_r($response);
 echo "</pre>";
 ```
 
-### Error Handling
+### Setting a Custom User Agent
 
-The `HttpClient` class handles errors internally and returns a structured array. Here's how to interpret the responses:
+You can set a custom user agent for your requests:
 
 ```php
-if ($response['status'] == 0) {
-    echo "Error: " . $response['body'];
+$client->set_user_agent('Custom User Agent');
+```
+
+### Error Handling
+
+`HttpClient` handles connection errors by returning a status code and error message. Here's how you might handle errors:
+
+```php
+if ($response['status'] !== 200) {
+    echo "Error: " . $response['message'];
 } else {
-    echo "Received response: " . $response['body'];
+    echo "Success: " . $response['message'];
 }
 ```
 
