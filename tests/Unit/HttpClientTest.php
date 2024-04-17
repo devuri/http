@@ -119,4 +119,20 @@ class HttpClientTest extends TestCase
         $this->assertEquals(200, $result['status']);
         $this->assertEquals($response, $result['body']);
     }
+
+    public function test_valid_ssl_certificate(): void
+    {
+        $httpClient = new HttpClient('https://www.googleapis.com');
+
+        $response = $httpClient->get('/');
+        $this->assertEquals(400, $response['status'], 'Should return HTTP 400 for valid SSL');
+    }
+
+    // public function testInvalidSSLCertificate()
+    // {
+    // 	$httpClient = new HttpClient('https://expired.badssl.com');
+    //
+    // 	$response = $httpClient->get('/');
+    // 	$this->assertEquals(500, $response['status'], 'Should return HTTP 500 for invalid SSL');
+    // }
 }
