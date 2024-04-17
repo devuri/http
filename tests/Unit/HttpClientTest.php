@@ -12,6 +12,12 @@ class HttpClientTest extends TestCase
 {
     private $httpClient;
 
+    public function a_curl_request(): void
+    {
+        $request = new HttpClient( 'https://jsonplaceholder.typicode.com/' );
+        $response = $request->curl_request('posts/1');
+    }
+
     public function test_referrer_request(): void
     {
         $refer = new HttpClient( 'https://jsonplaceholder.typicode.com/' );
