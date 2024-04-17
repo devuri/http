@@ -183,23 +183,6 @@ print_r($response);
 
 This configuration shows a more complex setup, where multiple options are configured to tailor the HTTP client behavior according to specific needs.
 
-### Setting a Custom User Agent
-
-You can set a custom user agent for your requests:
-
-```php
-$client->set_user_agent('Custom User Agent');
-```
-
-### Setting a Referrer
-
-Set a referrer URL for your requests:
-
-```php
-$client->set_referrer("https://example.com");
-$response = $client->get("/data/endpoint");
-```
-
 ### Error Handling
 
 Exceptions are caught internally, but it is recommended to handle potential errors or exceptions in your application logic, especially for critical operations.
