@@ -65,6 +65,11 @@ class HttpClient
         return $this->request( $endpoint, 'POST', $data, $headers );
     }
 
+    public function curl_request( string $endpoint, string $method = 'GET', array $data = [], array $headers = [] )
+    {
+        return $this->_curl( $endpoint, $method, $data, $headers );
+    }
+
     protected function set_http_response( array $http_response_header ): array
     {
         if ( ! empty( $http_response_header ) ) {
@@ -130,6 +135,56 @@ class HttpClient
         $this->set_http_response( $http_response_header );
 
         return $this->http_response;
+    }
+
+    private function _curl( string $endpoint, string $method, array $data = [], array $headers = [] )
+    {
+        $url = $this->base_url . $endpoint;
+
+        if ( ! $this->is_curl_available() ) {
+            return [ 'error' => 'curl_init not found' ];
+        }
+
+        $ch = curl_init();
+
+        // Set HTTP method
+        curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, $method );
+
+        // Set the headers
+        array_push( $headers, 'User-Agent: ' . $this->user_agent );
+        if ( $this->api_key ) {
+            array_push( $headers, 'Authorization: Bearer ' . $this->api_key );
+        }
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
+
+        // Enable HTTP/2
+        curl_setopt( $ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0 );
+
+        // Enable Keep-Alive
+        curl_setopt( $ch, CURLOPT_TCP_KEEPALIVE, 1 );
+
+        // Set POST fields
+        if ( 'POST' === $method ) {
+            curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $data ) );
+        }
+
+        // Set other options
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch, CURLOPT_TIMEOUT, $this->context->get( 'timeout' ) );
+
+        $response = curl_exec( $ch );
+        $httpcode = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+        curl_close( $ch );
+
+        return [
+            'status'   => $httpcode,
+            'response' => $response,
+        ];
+    }
+
+    private function is_curl_available(): bool
+    {
+        return \function_exists( 'curl_init' );
     }
 
     private function parse_http_status( array $http_response_header ): int
