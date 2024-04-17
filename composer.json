@@ -1,6 +1,6 @@
 {
     "name": "devuri/http",
-    "description": "A simple, flexible utility for making HTTP requests.",
+    "description": "A simple flexible utility for making HTTP requests.",
     "keywords": [
         "http",
         "dot-notation"
