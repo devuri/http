@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/devuri/http/compare/v0.1.3...v0.1.4) (2024-04-17)
+
+
+### Features
+
+* adds curl support ([5967fa4](https://github.com/devuri/http/commit/5967fa4a362d15fcf681e4b3f4c096a9f5e0bd66))
+
 ## [0.1.3](https://github.com/devuri/http/compare/v0.1.2...v0.1.3) (2024-04-17)
 
 
